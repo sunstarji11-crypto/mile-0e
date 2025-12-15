@@ -46,13 +46,15 @@
     <p>다음 그림 중 하나를 선택하세요 (제한시간 10초):</p>
     <div class="question">
       <label>
-        <input type="radio" name="imageChoice" value="이미지1" required>
-        <img src="https://i.ibb.co/ZRw1QYX/graph1.png" alt="이미지1" width="200" />
+        <input type="radio" name="imageChoice" value="이미지A" required>
+        <img src="https://i.ibb.co/x8w1PYp/graph1.png" alt="이미지 A" width="200" />
       </label>
+      
       <label>
-        <input type="radio" name="imageChoice" value="이미지2" required>
-        <img src="https://i.ibb.co/9kZSLpp/graph2.png" alt="이미지2" width="200" />
-      </label>
+        <input type="radio" name="imageChoice" value="이미지B" required>
+        <img src="https://i.ibb.co/HCN64pn/graph2.png" alt="이미지 B" width="200" />
+       </label>
+
     </div>
     <div class="nav-buttons">
       <button type="button" onclick="goNextPage(2)">다음 &gt;</button>
@@ -94,7 +96,7 @@
 
   <script>
     const TIME_LIMIT = 10;
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqhgbT3I5i2K2zT7jKu8AnQVdcgAf816q0rsx_8nPZfHd5tp4gm36LG4Qacn97Cbsy/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0fSeVtyXY4x31IGbcaYbCffQRF5BrasvthMIXXolGblJO5htlCQXM_cZ6zuvbVvsPTg/exec";
     let currentPage = 1;
     let timerId = null;
     let timeLeft = TIME_LIMIT;
