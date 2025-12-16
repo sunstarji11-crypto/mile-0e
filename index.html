@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2학년 호기심 연구소 동아리 탐구 설문</title>
   <style>
-    body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
+    body { font-family: sans-serif; line-height: 1.6; margin: 20px; font-size: 1.2em; }
     .page { display: none; }
     .page.active { display: block; }
     .question { margin: 15px 0; }
-    .question label { display: block; margin: 5px 0; font-size: 1.2em; }
+    .question label { display: block; margin: 5px 0; font-size: 1.1em; }
     .timer { font-weight: bold; color: red; font-size: 1.2em; }
     .nav-buttons { margin-top: 30px; }
     button {
       padding: 10px 20px;
-      font-size: 1.2em;
+      font-size: 1.1em;
     }
     input[type="text"] {
       font-size: 1.1em;
@@ -126,7 +126,6 @@
 
     function validatePage(pageNum) {
       const pageDiv = document.getElementById('page' + pageNum);
-      if (!pageDiv) return true;
       const requiredInputs = pageDiv.querySelectorAll('input[required]');
       for (let input of requiredInputs) {
         if (input.type === 'radio') {
@@ -147,14 +146,14 @@
     function startTimer(pageNum) {
       timeLeft = TIME_LIMIT;
       const timerElem = document.getElementById('timer' + pageNum);
-      if (!timerElem) return;
       timerElem.textContent = `(${timeLeft}초 남음)`;
       timerId = setInterval(() => {
         timeLeft--;
         timerElem.textContent = `(${timeLeft}초 남음)`;
         if (timeLeft <= 0) {
           clearInterval(timerId);
-          goNextPage(pageNum);
+          alert("시간이 초과되었습니다. 페이지를 새로고침하고 다시 시작하세요.");
+          location.reload();  // 강제 새로고침 처리
         }
       }, 1000);
     }
@@ -169,17 +168,17 @@
         }
         formData.append(input.name, input.value);
       });
+
       fetch(SCRIPT_URL, { method: 'POST', body: formData })
+        .then(res => {
+          if (!res.ok) throw new Error('응답 실패');
+          return res.text();
+        })
         .then(() => document.getElementById('submitMsg').style.display = 'block')
         .catch(error => {
           console.error('Error!', error);
           alert("응답 제출 중 오류가 발생했습니다.");
         });
-    }
-  </script>
-</body>
-</html>
-
     }
   </script>
 </body>
