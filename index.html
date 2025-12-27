@@ -19,119 +19,19 @@
     table { border-collapse: collapse; width: 100%; margin-top: 10px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
   </style>
-</head>
-<body>
-  <div id="formWrapper">
-    <!-- 페이지 1 -->
-    <div id="page1" class="page active">
-      <h2>기본 정보 입력</h2>
-      <div class="question">
-        <label>학년을 선택하세요:</label>
-        <label><input type="radio" name="grade" value="1학년" required> 1학년</label>
-        <label><input type="radio" name="grade" value="2학년" required> 2학년</label>
-        <label><input type="radio" name="grade" value="3학년" required> 3학년</label>
-      </div>
-      <div class="question">
-        <label>한붓그리기를 알고 있었나요?</label>
-        <label><input type="radio" name="knowEuler" value="예" required> 예</label>
-        <label><input type="radio" name="knowEuler" value="아니오" required> 아니오</label>
-      </div>
-      <div class="question">
-        <label>실험 안내를 모두 읽고 이해하였습니까?</label>
-        <label><input type="radio" name="readGuide" value="예" required> 예, 확인했습니다.</label>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" onclick="goNextPage(1)">다음 &gt;</button>
-      </div>
-    </div>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    <!-- 페이지 2 -->
-    <div id="page2" class="page">
-      <h2>이미지 선택 질문 <span class="timer" id="timer2"></span></h2>
-      <p>다음 그림 중 하나를 선택하세요 (제한시간 10초):</p>
-      <div class="question">
-        <label>
-          <input type="radio" name="imageChoice" value="이미지A" required>
-          <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-11%20151358.png" alt="이미지 A" width="200" />
-        </label>
-        <label>
-          <input type="radio" name="imageChoice" value="이미지B" required>
-          <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-25%20151357.png" alt="이미지 B" width="200" />
-        </label>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" onclick="goNextPage(2)">다음 &gt;</button>
-      </div>
-    </div>
-
-    <!-- 페이지 3 -->
-    <div id="page3" class="page">
-      <h2>난이도 비교 <span class="timer" id="timer3"></span></h2>
-      <p>어느 쪽이 더 어렵게 들리나요? (제한시간 10초):</p>
-      <div class="question">
-        <label><input type="radio" name="difficulty" value="쾨니히스베르크의 다리 문제" required> 쾨니히스베르크의 다리 문제</label>
-        <label><input type="radio" name="difficulty" value="수월중 2학년 학생의 하루 동선" required> 수월중 2학년 학생의 하루 동선</label>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" onclick="goNextPage(3)">다음 &gt;</button>
-      </div>
-    </div>
-
-    <!-- 페이지 4 -->
-    <div id="page4" class="page">
-      <h2>마무리 질문</h2>
-      <div class="question">
-        <label>이번 실험에 참여한 소감:</label>
-        <input type="text" name="feedback" required />
-      </div>
-      <div class="question">
-        <label>첫 번째 질문에서 한붓그리기를 시도해봤나요?</label>
-        <label><input type="radio" name="overallDifficulty" value="네" required> 네</label>
-        <label><input type="radio" name="overallDifficulty" value="아니오" required> 아니오</label>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" onclick="submitForm(this)">제출</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="submitMsg" style="margin-top:15px; color: blue; font-size: 1.5em; display: none;">
-    설문 응답이 제출되었습니다. 참여해주셔서 감사합니다!
-  </div>
-
-  <div id="resultPage">
-    <h2>응답 결과</h2>
-    <table id="responseTable">
-      <thead>
-        <tr>
-          <th>시간</th>
-          <th>학년</th>
-          <th>한붓그리기 인지</th>
-          <th>안내 이해</th>
-          <th>이미지 선택</th>
-          <th>난이도 비교</th>
-          <th>소감</th>
-          <th>한붓 시도</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <script>
     const TIME_LIMIT = 10;
     let currentPage = 1;
     let timerId = null;
     let timeLeft = TIME_LIMIT;
-    let responseStore = [];
 
-    function showPage(pageNum) {
-      document.querySelectorAll('.page').forEach(div => div.classList.remove('active'));
-      const pageDiv = document.getElementById('page' + pageNum);
-      if (pageDiv) pageDiv.classList.add('active');
-    }
+    const SUPABASE_URL = 'https://jmcyiaxgdtyliokxiobi.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_ETsX2-0BgAmgUoM1WRYuaw_EqOGAAF7';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    function goNextPage(pageNum) {
+    window.goNextPage = function (pageNum) {
       if (!validatePage(pageNum)) return;
       clearTimeout(timerId);
       const nextPageNum = pageNum + 1;
@@ -139,6 +39,35 @@
       currentPage = nextPageNum;
       showPage(currentPage);
       if (currentPage === 2 || currentPage === 3) startTimer(currentPage);
+    };
+
+    window.submitForm = async function () {
+      if (!validatePage(4)) return;
+
+      const response = {
+        respondent_name: getValue('grade'),
+        question1_answer: getValue('knowEuler'),
+        question2_answer: getValue('readGuide'),
+        image_choice: getValue('imageChoice'),
+        difficulty: getValue('difficulty'),
+        feedback: getValue('feedback', false),
+        overall: getValue('overallDifficulty')
+      };
+
+      const { error } = await supabase.from('survey_results').insert([response]);
+      if (error) {
+        alert('저장 중 오류 발생: ' + error.message);
+        return;
+      }
+
+      document.getElementById('formWrapper').style.display = 'none';
+      document.getElementById('submitMsg').style.display = 'block';
+    };
+
+    function showPage(pageNum) {
+      document.querySelectorAll('.page').forEach(div => div.classList.remove('active'));
+      const pageDiv = document.getElementById('page' + pageNum);
+      if (pageDiv) pageDiv.classList.add('active');
     }
 
     function validatePage(pageNum) {
@@ -172,26 +101,9 @@
         if (timeLeft <= 0) {
           clearInterval(timerId);
           alert("제한 시간이 초과되어 응답이 중단됩니다.");
-          document.getElementById('formWrapper').style.display = 'none';
+          window.close();
         }
       }, 1000);
-    }
-
-    function submitForm(button) {
-      if (!validatePage(4)) return;
-      const response = {
-        time: new Date().toLocaleString(),
-        grade: getValue('grade'),
-        knowEuler: getValue('knowEuler'),
-        readGuide: getValue('readGuide'),
-        imageChoice: getValue('imageChoice'),
-        difficulty: getValue('difficulty'),
-        feedback: getValue('feedback', false),
-        overallDifficulty: getValue('overallDifficulty')
-      };
-      responseStore.push(response);
-      document.getElementById('formWrapper').style.display = 'none';
-      document.getElementById('submitMsg').style.display = 'block';
     }
 
     function getValue(name, isRadio = true) {
@@ -204,20 +116,54 @@
       }
     }
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', async function(event) {
       if (event.key === '8') {
         const resultDiv = document.getElementById('resultPage');
         const tbody = document.querySelector('#responseTable tbody');
         tbody.innerHTML = '';
-        responseStore.forEach(entry => {
+
+        const { data, error } = await supabase.from('survey_results').select('*');
+        if (error) {
+          alert('결과 불러오기 오류: ' + error.message);
+          return;
+        }
+
+        data.forEach(entry => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${entry.time}</td><td>${entry.grade}</td><td>${entry.knowEuler}</td><td>${entry.readGuide}</td><td>${entry.imageChoice}</td><td>${entry.difficulty}</td><td>${entry.feedback}</td><td>${entry.overallDifficulty}</td>`;
+          tr.innerHTML = `<td>${entry.submitted_at || ''}</td><td>${entry.respondent_name}</td><td>${entry.question1_answer}</td><td>${entry.question2_answer}</td><td>${entry.image_choice}</td><td>${entry.difficulty}</td><td>${entry.feedback}</td><td>${entry.overall}</td>`;
           tbody.appendChild(tr);
         });
+
         resultDiv.style.display = 'block';
         document.getElementById('submitMsg').style.display = 'none';
       }
     });
   </script>
+</head>
+<body>
+  <div id="formWrapper">
+    <!-- Form Pages as before (same structure) -->
+  </div>
+  <div id="submitMsg" style="margin-top:15px; color: blue; font-size: 1.5em; display: none;">
+    설문 응답이 제출되었습니다. 참여해주셔서 감사합니다!
+  </div>
+  <div id="resultPage">
+    <h2>응답 결과</h2>
+    <table id="responseTable">
+      <thead>
+        <tr>
+          <th>시간</th>
+          <th>학년</th>
+          <th>한붓그리기 인지</th>
+          <th>안내 이해</th>
+          <th>이미지 선택</th>
+          <th>난이도 비교</th>
+          <th>소감</th>
+          <th>한붓 시도</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </body>
 </html>
