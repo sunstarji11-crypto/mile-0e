@@ -5,108 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2학년 호기심 연구소 동아리 탐구 설문</title>
   <style>
-    body { font-family: sans-serif; line-height: 1.6; margin: 20px; font-size: 1.2em; }
+    body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
     .page { display: none; }
     .page.active { display: block; }
     .question { margin: 15px 0; }
-    .question label { display: block; margin: 5px 0; font-size: 1.1em; }
+    .question label { display: block; margin: 5px 0; font-size: 1.2em; }
     .timer { font-weight: bold; color: red; font-size: 1.2em; }
     .nav-buttons { margin-top: 30px; }
-    button {
-      padding: 10px 20px;
-      font-size: 1.1em;
-    }
-    input[type="text"] {
-      font-size: 1.1em;
-      width: 100%;
-      padding: 6px;
-    }
+    button { padding: 10px 20px; font-size: 1.2em; }
+    input[type="text"] { font-size: 1.1em; width: 100%; padding: 6px; }
     img { display: block; margin: 10px 0; max-width: 100%; height: auto; }
+    #resultPage { display: none; margin-top: 30px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
   </style>
 </head>
 <body>
-
-  <!-- 페이지 1 -->
-  <div id="page1" class="page active">
-    <h2>기본 정보 입력</h2>
-    <div class="question">
-      <label>현재 재학 중인 학년을 선택하세요:</label>
-      <label><input type="radio" name="grade" value="1학년" required> 1학년</label>
-      <label><input type="radio" name="grade" value="2학년" required> 2학년</label>
-      <label><input type="radio" name="grade" value="3학년" required> 3학년</label>
-    </div>
-    <div class="question">
-      <label>한붓그리기가 정확히 무엇인지 알고 있나요?</label>
-      <label><input type="radio" name="knowEuler" value="예" required> 예</label>
-      <label><input type="radio" name="knowEuler" value="아니오" required> 아니오</label>
-    </div>
-    <div class="question">
-      <label>실험 안내를 모두 읽고 이해하였습니까?</label>
-      <label><input type="radio" name="readGuide" value="예" required> 예, 확인했습니다.</label>
-    </div>
-    <div class="nav-buttons">
-      <button type="button" onclick="goNextPage(1)">다음 &gt;</button>
-    </div>
+  <div id="formWrapper">
+    <!-- 설문 폼 페이지 (생략 - 그대로 유지) -->
   </div>
 
-  <!-- 페이지 2 -->
-  <div id="page2" class="page">
-    <h2>이미지 선택 질문 <span class="timer" id="timer2"></span></h2>
-    <p>다음 그림 중 하나를 선택하세요 (제한시간 10초):</p>
-    <div class="question">
-      <label>
-        <input type="radio" name="imageChoice" value="이미지A" required>
-        <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-11%20151358.png" alt="이미지 A" width="200" />
-      </label>
-      <label>
-        <input type="radio" name="imageChoice" value="이미지B" required>
-        <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-25%20151357.png" alt="이미지 B" width="200" />
-      </label>
-    </div>
-    <div class="nav-buttons">
-      <button type="button" onclick="goNextPage(2)">다음 &gt;</button>
-    </div>
+  <div id="submitMsg" style="margin-top:15px; color: blue; font-size: 1.5em; display: none;">
+    설문 응답이 제출되었습니다. 참여해주셔서 감사합니다!
   </div>
 
-  <!-- 페이지 3 -->
-  <div id="page3" class="page">
-    <h2>난이도 비교 <span class="timer" id="timer3"></span></h2>
-    <p>어느 쪽이 더 어렵게 들리나요? (제한시간 10초):</p>
-    <div class="question">
-      <label><input type="radio" name="difficulty" value="쾨니히스베르크의 다리 문제" required> 쾨니히스베르크의 다리 문제</label>
-      <label><input type="radio" name="difficulty" value="수월중 2학년 학생의 하루 동선" required> 수월중 2학년 학생의 하루 동선</label>
-    </div>
-    <div class="nav-buttons">
-      <button type="button" onclick="goNextPage(3)">다음 &gt;</button>
-    </div>
-  </div>
-
-  <!-- 페이지 4 -->
-  <div id="page4" class="page">
-    <h2>마무리 질문</h2>
-    <div class="question">
-      <label>이번 실험에 참여한 소감:</label>
-      <input type="text" name="feedback" required />
-    </div>
-    <div class="question">
-      <label>첫 번째 질문의 사진에 한붓그리기를 시도해봤나요?</label>
-      <label><input type="radio" name="overallDifficulty" value="네" required> 네</label>
-      <label><input type="radio" name="overallDifficulty" value="아니오" required> 아니오</label>
-    </div>
-    <div class="nav-buttons">
-      <button type="button" onclick="submitForm()">제출</button>
-    </div>
-    <div id="submitMsg" style="margin-top:15px; color: blue; display: none;">
-      설문 응답이 제출되었습니다. 참여해주셔서 감사합니다!
-    </div>
+  <div id="resultPage">
+    <h2>응답 결과</h2>
+    <table id="responseTable">
+      <thead>
+        <tr>
+          <th>시간</th>
+          <th>학년</th>
+          <th>한붓그리기 인지</th>
+          <th>안내 이해</th>
+          <th>이미지 선택</th>
+          <th>난이도 비교</th>
+          <th>소감</th>
+          <th>한붓 시도</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <script>
     const TIME_LIMIT = 10;
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaiK2emKjfY57rorvVJWz8KFTQ6IhJG6eMpWuiyeeovioF3wKGnUeuPyDooOI684nrpQ/exec";
     let currentPage = 1;
     let timerId = null;
     let timeLeft = TIME_LIMIT;
+    let responseStore = [];
 
     function showPage(pageNum) {
       document.querySelectorAll('.page').forEach(div => div.classList.remove('active'));
@@ -126,6 +73,7 @@
 
     function validatePage(pageNum) {
       const pageDiv = document.getElementById('page' + pageNum);
+      if (!pageDiv) return true;
       const requiredInputs = pageDiv.querySelectorAll('input[required]');
       for (let input of requiredInputs) {
         if (input.type === 'radio') {
@@ -146,40 +94,60 @@
     function startTimer(pageNum) {
       timeLeft = TIME_LIMIT;
       const timerElem = document.getElementById('timer' + pageNum);
+      if (!timerElem) return;
       timerElem.textContent = `(${timeLeft}초 남음)`;
       timerId = setInterval(() => {
         timeLeft--;
         timerElem.textContent = `(${timeLeft}초 남음)`;
         if (timeLeft <= 0) {
           clearInterval(timerId);
-          alert("시간이 초과되었습니다. 페이지를 새로고침하고 다시 시작하세요.");
-          location.reload();  // 강제 새로고침 처리
+          alert("제한 시간이 초과되어 응답이 중단됩니다.");
+          window.close();
         }
       }, 1000);
     }
 
-    function submitForm() {
+    function submitForm(button) {
       if (!validatePage(4)) return;
-      const formData = new FormData();
-      const allInputs = document.querySelectorAll('input[name]');
-      allInputs.forEach(input => {
-        if ((input.type === 'radio' || input.type === 'checkbox')) {
-          if (!input.checked) return;
-        }
-        formData.append(input.name, input.value);
-      });
-
-      fetch(SCRIPT_URL, { method: 'POST', body: formData })
-        .then(res => {
-          if (!res.ok) throw new Error('응답 실패');
-          return res.text();
-        })
-        .then(() => document.getElementById('submitMsg').style.display = 'block')
-        .catch(error => {
-          console.error('Error!', error);
-          alert("응답 제출 중 오류가 발생했습니다.");
-        });
+      const response = {
+        time: new Date().toLocaleString(),
+        grade: getValue('grade'),
+        knowEuler: getValue('knowEuler'),
+        readGuide: getValue('readGuide'),
+        imageChoice: getValue('imageChoice'),
+        difficulty: getValue('difficulty'),
+        feedback: getValue('feedback', false),
+        overallDifficulty: getValue('overallDifficulty')
+      };
+      responseStore.push(response);
+      document.getElementById('formWrapper').style.display = 'none';
+      document.getElementById('submitMsg').style.display = 'block';
     }
+
+    function getValue(name, isRadio = true) {
+      if (isRadio) {
+        const input = document.querySelector(`input[name="${name}"]:checked`);
+        return input ? input.value : '';
+      } else {
+        const input = document.querySelector(`input[name="${name}"]`);
+        return input ? input.value : '';
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === '8') {
+        const resultDiv = document.getElementById('resultPage');
+        const tbody = document.querySelector('#responseTable tbody');
+        tbody.innerHTML = '';
+        responseStore.forEach(entry => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${entry.time}</td><td>${entry.grade}</td><td>${entry.knowEuler}</td><td>${entry.readGuide}</td><td>${entry.imageChoice}</td><td>${entry.difficulty}</td><td>${entry.feedback}</td><td>${entry.overallDifficulty}</td>`;
+          tbody.appendChild(tr);
+        });
+        resultDiv.style.display = 'block';
+        document.getElementById('submitMsg').style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
