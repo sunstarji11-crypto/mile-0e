@@ -22,7 +22,74 @@
 </head>
 <body>
   <div id="formWrapper">
-    <!-- 설문 폼 페이지 (생략 - 그대로 유지) -->
+    <!-- 설문 폼 페이지 시작 -->
+    <div id="page1" class="page active">
+      <h2>기본 정보 입력</h2>
+      <div class="question">
+        <label>학년을 선택하세요:</label>
+        <label><input type="radio" name="grade" value="1학년" required> 1학년</label>
+        <label><input type="radio" name="grade" value="2학년" required> 2학년</label>
+        <label><input type="radio" name="grade" value="3학년" required> 3학년</label>
+      </div>
+      <div class="question">
+        <label>한붓그리기를 알고 있었나요?</label>
+        <label><input type="radio" name="knowEuler" value="예" required> 예</label>
+        <label><input type="radio" name="knowEuler" value="아니오" required> 아니오</label>
+      </div>
+      <div class="question">
+        <label>실험 안내를 모두 읽고 이해하였습니까?</label>
+        <label><input type="radio" name="readGuide" value="예" required> 예, 확인했습니다.</label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="goNextPage(1)">다음 &gt;</button>
+      </div>
+    </div>
+
+    <div id="page2" class="page">
+      <h2>이미지 선택 질문 <span class="timer" id="timer2"></span></h2>
+      <p>다음 그림 중 하나를 선택하세요 (제한시간 10초):</p>
+      <div class="question">
+        <label>
+          <input type="radio" name="imageChoice" value="이미지A" required>
+          <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-11-11%20151358.png" alt="이미지 A" width="200" />
+        </label>
+        <label>
+          <input type="radio" name="imageChoice" value="이미지B" required>
+          <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-11-25%20151357.png" alt="이미지 B" width="200" />
+        </label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="goNextPage(2)">다음 &gt;</button>
+      </div>
+    </div>
+
+    <div id="page3" class="page">
+      <h2>난이도 비교 <span class="timer" id="timer3"></span></h2>
+      <p>어느 쪽이 더 어렵게 들리나요? (제한시간 10초):</p>
+      <div class="question">
+        <label><input type="radio" name="difficulty" value="쾨니히스베르크의 다리 문제" required> 쾨니히스베르크의 다리 문제</label>
+        <label><input type="radio" name="difficulty" value="수월중 2학년 학생의 하루 동선" required> 수월중 2학년 학생의 하루 동선</label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="goNextPage(3)">다음 &gt;</button>
+      </div>
+    </div>
+
+    <div id="page4" class="page">
+      <h2>마무리 질문</h2>
+      <div class="question">
+        <label>이번 실험에 참여한 소감:</label>
+        <input type="text" name="feedback" required />
+      </div>
+      <div class="question">
+        <label>첫 번째 질문에서 한붓그리기를 시도해봤나요?</label>
+        <label><input type="radio" name="overallDifficulty" value="네" required> 네</label>
+        <label><input type="radio" name="overallDifficulty" value="아니오" required> 아니오</label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="submitForm(this)">제출</button>
+      </div>
+    </div>
   </div>
 
   <div id="submitMsg" style="margin-top:15px; color: blue; font-size: 1.5em; display: none;">
@@ -101,8 +168,10 @@
         timerElem.textContent = `(${timeLeft}초 남음)`;
         if (timeLeft <= 0) {
           clearInterval(timerId);
-          alert("제한 시간이 초과되어 응답이 중단됩니다.");
-          window.close();
+          alert("제한 시간이 초과되어 설문을 종료합니다.");
+          document.getElementById('formWrapper').style.display = 'none';
+          document.getElementById('submitMsg').textContent = '시간 초과로 설문이 종료되었습니다.';
+          document.getElementById('submitMsg').style.display = 'block';
         }
       }, 1000);
     }
@@ -122,6 +191,7 @@
       responseStore.push(response);
       document.getElementById('formWrapper').style.display = 'none';
       document.getElementById('submitMsg').style.display = 'block';
+      button.style.display = 'none';
     }
 
     function getValue(name, isRadio = true) {
