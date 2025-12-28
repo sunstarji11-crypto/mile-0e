@@ -32,8 +32,8 @@
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     window.goNextPage = function (pageNum) {
-      if (!validatePage(pageNum)) return;
       clearTimeout(timerId);
+      if (!validatePage(pageNum)) return;
       const nextPageNum = pageNum + 1;
       if (nextPageNum > 4) return;
       currentPage = nextPageNum;
@@ -48,8 +48,8 @@
         respondent_name: getValue('grade'),
         question1_answer: getValue('knowEuler'),
         question2_answer: getValue('readGuide'),
-        image_choice: getValue('imageChoice'),
-        difficulty: getValue('difficulty'),
+        image_choice: getValue('imageChoice') || '미응답',
+        difficulty: getValue('difficulty') || '미응답',
         feedback: getValue('feedback', false),
         overall: getValue('overallDifficulty')
       };
@@ -100,8 +100,7 @@
         timerElem.textContent = `(${timeLeft}초 남음)`;
         if (timeLeft <= 0) {
           clearInterval(timerId);
-          alert("제한 시간이 초과되어 응답이 중단됩니다.");
-          window.close();
+          goNextPage(pageNum);
         }
       }, 1000);
     }
@@ -142,11 +141,73 @@
 </head>
 <body>
   <div id="formWrapper">
-    <!-- 페이지 구성 및 질문 섹션 삽입 -->
+    <div id="page1" class="page active">
+      <h2>기본 정보 입력</h2>
+      <div class="question">
+        <label>현재 재학 중인 학년을 선택하세요:</label>
+        <label><input type="radio" name="grade" value="1학년" required> 1학년</label>
+        <label><input type="radio" name="grade" value="2학년" required> 2학년</label>
+        <label><input type="radio" name="grade" value="3학년" required> 3학년</label>
+      </div>
+      <div class="question">
+        <label>한붓그리기가 정확히 무엇인지 알고 있나요?</label>
+        <label><input type="radio" name="knowEuler" value="예" required> 예</label>
+        <label><input type="radio" name="knowEuler" value="아니오" required> 아니오</label>
+      </div>
+      <div class="question">
+        <label>실험 안내를 모두 읽고 이해하였습니까?</label>
+        <label><input type="radio" name="readGuide" value="예" required> 예, 확인했습니다.</label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="goNextPage(1)">다음 &gt;</button>
+      </div>
+    </div>
+
+    <div id="page2" class="page">
+      <h2>설문1 <span class="timer" id="timer2"></span></h2>
+      <p>둘 중에 더 한붓그리기에 어려워보이는 것은? (한붓그리기를 시도하지 마세요)</p>
+      <div class="question">
+        <label><input type="radio" name="imageChoice" value="이미지A"> <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-11%20151358.png" alt="이미지 A" /></label>
+        <label><input type="radio" name="imageChoice" value="이미지B"> <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-25%20151357.png" alt="이미지 B" /></label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="goNextPage(2)">다음 &gt;</button>
+      </div>
+    </div>
+
+    <div id="page3" class="page">
+      <h2>설문2 <span class="timer" id="timer3"></span></h2>
+      <p>어느 쪽이 더 어렵게 들리나요?</p>
+      <div class="question">
+        <label><input type="radio" name="difficulty" value="쾨니히스베르크의 다리 문제"> 쾨니히스베르크의 다리 문제</label>
+        <label><input type="radio" name="difficulty" value="수월중 2학년 학생의 하루 동선"> 수월중 2학년 학생의 하루 동선</label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="goNextPage(3)">다음 &gt;</button>
+      </div>
+    </div>
+
+    <div id="page4" class="page">
+      <h2>마무리 질문</h2>
+      <div class="question">
+        <label>이번 실험에 참여한 소감:</label>
+        <input type="text" name="feedback" required />
+      </div>
+      <div class="question">
+        <label>첫 번째 질문의 사진에 한붓그리기를 시도해봤나요?</label>
+        <label><input type="radio" name="overallDifficulty" value="네" required> 네</label>
+        <label><input type="radio" name="overallDifficulty" value="아니오" required> 아니오</label>
+      </div>
+      <div class="nav-buttons">
+        <button type="button" onclick="submitForm()">제출</button>
+      </div>
+    </div>
   </div>
+
   <div id="submitMsg" style="margin-top:15px; color: blue; font-size: 1.5em; display: none;">
     설문 응답이 제출되었습니다. 참여해주셔서 감사합니다!
   </div>
+
   <div id="resultPage">
     <h2>응답 결과</h2>
     <table id="responseTable">
