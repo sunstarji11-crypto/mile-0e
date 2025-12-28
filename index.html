@@ -32,8 +32,8 @@
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     window.goNextPage = function (pageNum) {
-      clearTimeout(timerId);
       if (!validatePage(pageNum)) return;
+      clearTimeout(timerId);
       const nextPageNum = pageNum + 1;
       if (nextPageNum > 4) return;
       currentPage = nextPageNum;
@@ -115,6 +115,8 @@
       }
     }
 
+    document.addEventListener('DOMContentLoaded', () => showPage(1));
+
     document.addEventListener('keydown', async function(event) {
       if (event.key === '8') {
         const resultDiv = document.getElementById('resultPage');
@@ -141,7 +143,7 @@
 </head>
 <body>
   <div id="formWrapper">
-    <div id="page1" class="page active">
+    <div id="page1" class="page">
       <h2>기본 정보 입력</h2>
       <div class="question">
         <label>현재 재학 중인 학년을 선택하세요:</label>
@@ -150,7 +152,7 @@
         <label><input type="radio" name="grade" value="3학년" required> 3학년</label>
       </div>
       <div class="question">
-        <label>한붓그리기가 정확히 무엇인지 알고 있나요?</label>
+        <label>한붓그리기가 무엇인지 알고 있었나요?</label>
         <label><input type="radio" name="knowEuler" value="예" required> 예</label>
         <label><input type="radio" name="knowEuler" value="아니오" required> 아니오</label>
       </div>
@@ -164,11 +166,17 @@
     </div>
 
     <div id="page2" class="page">
-      <h2>설문1 <span class="timer" id="timer2"></span></h2>
+      <h2>이미지 선택 질문 <span class="timer" id="timer2"></span></h2>
       <p>둘 중에 더 한붓그리기에 어려워보이는 것은? (한붓그리기를 시도하지 마세요)</p>
       <div class="question">
-        <label><input type="radio" name="imageChoice" value="이미지A"> <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-11%20151358.png" alt="이미지 A" /></label>
-        <label><input type="radio" name="imageChoice" value="이미지B"> <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-25%20151357.png" alt="이미지 B" /></label>
+        <label>
+          <input type="radio" name="imageChoice" value="이미지A">
+          <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-11%20151358.png" alt="이미지 A" width="200" />
+        </label>
+        <label>
+          <input type="radio" name="imageChoice" value="이미지B">
+          <img src="https://raw.githubusercontent.com/sunstarji11-crypto/mile-0e/main/스크린샷%202025-11-25%20151357.png" alt="이미지 B" width="200" />
+        </label>
       </div>
       <div class="nav-buttons">
         <button type="button" onclick="goNextPage(2)">다음 &gt;</button>
@@ -176,7 +184,7 @@
     </div>
 
     <div id="page3" class="page">
-      <h2>설문2 <span class="timer" id="timer3"></span></h2>
+      <h2>난이도 비교 <span class="timer" id="timer3"></span></h2>
       <p>어느 쪽이 더 어렵게 들리나요?</p>
       <div class="question">
         <label><input type="radio" name="difficulty" value="쾨니히스베르크의 다리 문제"> 쾨니히스베르크의 다리 문제</label>
@@ -194,7 +202,7 @@
         <input type="text" name="feedback" required />
       </div>
       <div class="question">
-        <label>첫 번째 질문의 사진에 한붓그리기를 시도해봤나요?</label>
+        <label>한붓그리기를 시도해보셨나요?</label>
         <label><input type="radio" name="overallDifficulty" value="네" required> 네</label>
         <label><input type="radio" name="overallDifficulty" value="아니오" required> 아니오</label>
       </div>
